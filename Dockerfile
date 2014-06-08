@@ -1,11 +1,20 @@
+# Start from a Debian Jessie base image
 FROM debian:jessie
-RUN apt-get update && apt-get -y install busybox-static adduser bzip2 xz-utils nano insserv module-init-tools sudo debootstrap cpio syslinux xorriso
+
+# Install the required packages for the development enviromnent
+RUN apt-get update && apt-get -y install busybox-static adduser bzip2 xz-utils insserv module-init-tools sudo debootstrap cpio syslinux xorriso bash vim
+
+# Add files into the development image
 ADD hooks /root/hooks
 ADD buildboot /root/buildboot/
 ADD includes.binary /root/includes.binary/
 ADD includes.chroot /root/includes.chroot/
-ADD VERSION /root/includes.binary/version
-RUN cp /root/includes.binary/version /root/includes.chroot/etc/version
 ADD package-lists /root/package-lists/
-RUN /root/buildboot/build_ramdisk.sh /root /root/init.gz /root/buildboot/init
-CMD ["/root/buildboot/d2d_wrapper.sh"]
+
+# Add version information
+ADD VERSION /root/includes.binary/version
+ADD VERSION /root/includes.chroot/etc/version
+
+# Run the wrapper
+CMD ["/root/buildboot/wrapper.sh"]
+# CMD ["/bin/sh"]

@@ -1,3 +1,23 @@
+This is a customized version of the standard debian2docker.
+Its goals are:
+ - Keep the base image under 50MB for fitting on a business card CD
+ - Keep base image as minimal as possible
+ - Have a full installation of Docker available for running containers
+ - Have the created ISO be hybrid; Allow for burning to disk or dd to USB
+ - Provide an auto-import mechanism from the ISO itself or from a USB drive
+ - Boot using Grub2
+ - Support squashfs + aufs + tmpfs for writable read-only media
+ - Support mounting /var/lib/docker to a persistent partition
+ - Support a "frugal" installation
+ - Support LUKS full-disk encryption on install
+ - Boot using a customized Kali-linux kernel
+ - Use Xpra / Xephyr to display GUI applications inside docker containers
+ - Strip out all unnecessary files from the image
+ - Use Multistrap and apt-pinning to create the base image
+ - Support alias scripts in a bin/ directory for running available images
+ - Keep the entire base system inside an initramfs.gz for easy booting
+
+################################################################################
 # debian2docker
 
 ### What is debian2docker
