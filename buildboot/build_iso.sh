@@ -12,7 +12,7 @@ mkdir -p /tmp/iso/boot/isolinux
 mkdir -p /tmp/iso/live/
 cp /usr/lib/syslinux/isolinux.bin /tmp/iso/boot/isolinux/
 cp /root/vmlinuz /tmp/iso/live/
-cp /root/ramdisk-final.gz /tmp/iso/live/initrd.img
+cp /root/initramfs.gz /tmp/iso/live/initrd.img
 cp -Rfp /root/includes.binary/* /tmp/iso/
 xorriso -as mkisofs \
 	-l -J -R -V debian2docker -no-emul-boot -boot-load-size 4 -boot-info-table \

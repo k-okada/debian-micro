@@ -2,7 +2,7 @@
 FROM debian:jessie
 
 # Install the required packages for the development enviromnent
-RUN apt-get update && apt-get -y install busybox-static adduser bzip2 xz-utils insserv module-init-tools sudo debootstrap cpio syslinux xorriso bash vim
+RUN apt-get update && apt-get -y install busybox-static adduser bzip2 xz-utils insserv module-init-tools sudo debootstrap cpio syslinux xorriso bash vim squashfs-tools
 
 # Add files into the development image
 ADD hooks /root/hooks
@@ -17,4 +17,4 @@ ADD VERSION /root/includes.chroot/etc/version
 
 # Run the wrapper
 CMD ["/root/buildboot/wrapper.sh"]
-# CMD ["/bin/sh"]
+

@@ -17,3 +17,4 @@ sysvinit
 traceroute
 wget
 xz-utils
+squashfs-tools

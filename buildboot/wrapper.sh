@@ -28,10 +28,6 @@ PACKAGES=$(./generate_package_list.sh /root/package-lists)
 mv /root/output/boot/vmlinuz* /root/vmlinuz
 rm -rf /root/output/boot
 
-# TEMP
-# Clean
-chroot /root/output apt-get clean
-
 # Include files into the chroot
 cp -Rfp /root/includes.chroot/* /root/output
 
