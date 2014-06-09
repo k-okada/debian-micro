@@ -2,22 +2,14 @@
 
 # Build an initramfs rootfs image to boot from
 # Usage:
-# ./build_rootfs.sh
+# ./build_rootfs.sh <bootstrap directory> <output initramfs>
 
 # Fail upon any errors
 set -e
 
 # Read the command line arguments
-
-#cd /root/output
-#find . | cpio --quiet -H newc -o | xz -8 > ../initramfs-data.xz
-#cd /root/
-#mkdir RAMFS
-#cd RAMFS
-#mv ../initramfs-data.xz rootfs.xz
-#find . | cpio --quiet -H newc -o | gzip -1 > ../ramdisk-data.gz
-#cat /root/init.gz /root/ramdisk-data.gz > /root/ramdisk-final.gz
-#rm -rf /root/output
+BOOTSTRAP=$1
+OUTPUT=$2
 
 # Squash the root filesystem with 1MB block size LZMA2 compression
 mksquashfs /root/output /root/rootfs.sfs -noappend -b 1048576 -comp xz -Xdict-size 100%
