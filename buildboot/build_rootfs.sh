@@ -34,11 +34,22 @@ cd /root/modules
 find . | cpio --quiet -H newc -o | gzip -9 > /root/modules.gz
 cd /root
 
+# Pull required binaries into the initramfs
+mkdir /root/binaries
+/root/buildboot/copy_exec.sh /sbin/cryptsetup /root/output /root/binaries
+/root/buildboot/copy_exec.sh /sbin/lvm /root/output /root/binaries
+
+# Create the initramfs containing the binaries with maximum gzip compression
+cd /root/binaries
+find . | cpio --quiet -H newc -o | gzip -9 > /root/binaries.gz
+cd /root
+
 # Concatenate the init portion with the data portion to create the final initramfs
-cat /root/init.gz /root/data.gz /root/modules.gz > /root/initramfs.gz
+cat /root/init.gz /root/data.gz /root/modules.gz /root/binaries.gz > /root/initramfs.gz
 
 # Clean up
 rm -rf /root/data
 rm -rf /root/modules
+rm -rf /root/binaries
 rm -rf /root/output
 

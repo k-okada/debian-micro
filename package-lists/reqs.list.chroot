@@ -8,3 +8,8 @@ sudo
 sysvinit
 wget
 xz-utils
+cryptsetup
+lvm2
+bash
+vim
+less
