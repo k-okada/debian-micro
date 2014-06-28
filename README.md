@@ -1,82 +1,81 @@
-This is a customized version of the standard debian2docker.
-Its goals are:
- - Keep the base image under 50MB for fitting on a business card CD
- - Keep base image as minimal as possible
- - Have a full installation of Docker available for running containers
- - Have the created ISO be hybrid; Allow for burning to disk or dd to USB
- - Provide an auto-import mechanism from the ISO itself or from a USB drive
- - Boot using Grub2
- - Support squashfs + aufs + tmpfs for writable read-only media
- - Support mounting /var/lib/docker to a persistent partition
- - Support a "frugal" installation
- - Support LUKS full-disk encryption on install
- - Boot using a customized Kali-linux kernel
- - Use Xpra / Xephyr to display GUI applications inside docker containers
- - Strip out all unnecessary files from the image
- - Use Multistrap and apt-pinning to create the base image
- - Support alias scripts in a bin/ directory for running available images
- - Keep the entire base system inside an initramfs.gz for easy booting
+debian2docker
+-------------
 
-################################################################################
-# debian2docker
+### What is debian2docker?
 
-### What is debian2docker
+This is a fork of the "official" debian2docker found here:
 
-Debian2docker is a hybrid bootable ISO which starts an amd64 Linux system based on Debian. Its main purpose is to run Docker and to allow the execution of containers using Docker. 
+[https://github.com/unclejack/debian2docker](https://github.com/unclejack/debian2docker)
 
-The ISO is currently about 55 MB and is based on Debian jessie.
+>
+Debian2docker is a hybrid bootable ISO which starts an amd64 Linux system based on Debian. Its main purpose is to run Docker and to allow the execution of containers using Docker.
 
-This project is meant to merge back into boot2docker if that's possible.
+### Dependencies
+
+The only dependency is that Docker needs to be available on the build machine.
 
 ### How to build
 
-Building debian2docker is quite simple:
-
-```
-docker rm run-debian2docker
-docker build -t debian2docker .
-docker run -i -t --privileged --name run-debian2docker debian2docker
-docker cp run-debian2docker:/debian2docker.iso .
-```
-note: the ``docker cp`` will complain ``operation not permitted`` - presumably as it tries to change the file's ownership to ``root``
+Simply run the `build.sh` script. The ISO is build inside of a Docker container and the result is copied out into this folder.
 
 ### How to run
 
-1. Create a VM.
-2. Add the ISO you've built as a virtual CD/DVD image.
-3. Start the VM
-4. Wait for the system to boot and start using debian2docker.
+Burn the ISO to a disk or load it into a virtual machine. It will boot to a bash prompt with Docker installed.
 
-Linux & qemu/kvm example:
-```
-$ kvm -cdrom debian2docker.iso -m 768
-# wait for the system to boot and start using debian2docker
-```
+Some other features are not implemented yet.
 
-The password for the user docker is `live`.
+### How to install
 
-### Goals
+This feature is not available yet.
 
-debian2docker has the following goals:
+### Why the fork?
 
-1. Remain minimal - no package installation
-2. Become a new base for boot2docker.
-3. Offer only the minimal tooling required to run Docker and its containers.
-4. Make use of Debian binary packages - avoid lengthy compilation times.
-5. If a package is broken or has problems, it should be fixed upstream and used.
-6. Become an official and supported Docker distribution.
+I had stumbled upon some interesting Docker projects:
 
-### Why Debian?
+ - [Boot to Docker](https://github.com/unclejack/debian2docker)
+ - [Docker Desktop](https://github.com/rogaha/docker-desktop)
+ - [Docker in Docker](https://github.com/jpetazzo/dind)
+ 
+It occurred to me, can we run Docker as a main OS? We have all the pieces to do so.  
+I decided to start from debian2desktop as this will be the underlying core that runs the system.
 
-We've decided to choose Debian because it's a large project and it can be trusted for a few reasons:
+### Docker as an OS
 
-1. Debian packages can be verified and Debian can be trusted.
-2. Debian has been around for a long time and it'll be around.
-3. The toolchain and the process can be simplified by using tooling provided by Debian.
-4. All minimal dependencies to support Docker are already in Debian.
-5. The system can still remain small.
-6. We can still disallow the installation of software in the live environment - NO package installation!
-7. Packages may be customized easily by rebuilding them from sources when needed.
-8. We can build debian2docker in a Debian container running debian2docker.
+When I talk about Docker as an OS, I am intending it to be for a single desktop user, such as a developer like myself. This is not intended to be used for a scalable production environment, if you are looking for that check out [CoreOS](https://coreos.com/). Rather, I am trying to create a flexible, portable OS that has all the best features of Debian and Docker together.
 
-The goal remains the same: running Docker to run Docker containers.
+In doing so, I have some goals I am hoping to achieve:
+
+ - A live system that allows for encrypted persistence.
+ - Easy to rebuild, modify, and customize.
+ - Each application sandboxed for security.
+ - Allow "restore factory defaults" at any time.
+
+### How does it work?
+
+The idea is that when the base image is booted, it starts an X server and a docker container, either from the ISO or on a USB stick. The "host" running the X server will then connect to the docker container with X forwarding to allow the container to display a GUI. The container that is run will be a docker-desktop instance, but it could just as easily be a web browser or something else entirely.
+
+To the user, they will just see their desktop come up as usual, but behind the scenes that desktop is completely sandboxed from the base system, and has the layering advantages of a docker container.
+The host is able to run multiple desktop instances, meaning they can switch workflows very easily.
+Finally, if docker-in-docker is used inside the docker-desktop image, then additional sandboxed applications can be run inside each desktop.
+
+Your desktop environment can be completely reconfigured at run time. It is like building a system out of Lego bricks, where a Docker container is a brick.
+
+### Possible uses
+
+ - Convert any application into its own bootable live cd
+ - Run a Firefox browser in kiosk mode
+ - Turn any machine into a thin client
+ - ...or a server
+
+### Requirements
+
+Some of the requirements I have set are:
+
+ - The core image should fit on a business card sized CD (~50MB).
+ - Only contain the necessary packages, nothing extraneous preinstalled. 
+ - Support an auto-image import functionality to allow Docker containers to be preloaded
+ - Perform a "frugal" installation with encrypted persistence
+ - Support a customized non-standard kernel, such as one from Kali linux
+ - Utilize the iso-hybrid format to allow burning to disk or dd'ing to usb.
+ - Keep it easy to boot anywhere; Rootfs inside of the initramfs
+ 
