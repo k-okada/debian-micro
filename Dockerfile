@@ -15,8 +15,8 @@ ADD includes.chroot /root/includes.chroot/
 ADD package-lists /root/package-lists/
 
 # Add version information
-ADD VERSION /root/includes.binary/version
-ADD VERSION /root/includes.chroot/etc/version
+# ADD VERSION /root/includes.binary/version
+# ADD VERSION /root/includes.chroot/etc/version
 
 # Run the wrapper
 CMD ["/root/buildboot/wrapper.sh"]
