@@ -1,14 +1,19 @@
 #!/bin/sh
 
-rm -f /var/cache/apt/*.bin
+set -e
+
+rm -f /usr/bin/oldfind
+rm -f /usr/bin/omshell
+rm -f /usr/sbin/visudo
 rm -f /var/cache/apt/archives/*.deb
+rm -f /var/cache/apt/*.bin
 rm -f /var/cache/debconf/templates.dat
 rm -f /var/cache/debconf/templates.dat-old
 rm -f /var/core/*
-rm -f /var/lib/apt/list/partial/*
 rm -f /var/lib/apt/list/*
+rm -f /var/lib/apt/list/partial/*
+rm -f /var/lib/apt/lists/* || true
 rm -f /var/lib/apt/lists/partial/*
-rm -f /var/lib/apt/lists/*
 rm -f /var/lib/dpkg/info/linux-image*-amd64.md5sums
 rm -f /var/log/*.gz
 rm -rf /tmp/*
@@ -16,6 +21,7 @@ rm -rf /usr/include/*
 rm -rf /usr/share/doc/*
 rm -rf /usr/share/file 
 rm -rf /usr/share/fonts/*
+#rm -rf /usr/share/groff/*
 rm -rf /usr/share/i18n/*
 rm -rf /usr/share/info/*
 rm -rf /usr/share/linda/*
@@ -29,4 +35,3 @@ rm -rf /usr/share/zoneinfo/*
 rm -rf /var/cache/apt/archives/partial/*
 rm -rf /var/cache/man/*
 rm -rf /var/tmp/*
-

@@ -19,3 +19,7 @@ PACKAGES=$@
 # Call debootstrap to create the base image
 debootstrap --include="$PACKAGES" --variant=minbase $SUITE $OUTPUTDIR $MIRROR
 
+# Overwrite the sources
+echo deb http://ftp.us.debian.org/debian testing main contrib non-free > $OUTPUTDIR/etc/apt/sources.list
+echo deb http://ftp.debian.org/debian jessie-updates main contrib non-free >> $OUTPUTDIR/etc/apt/sources.list
+echo deb http://security.debian.org/ jessie/updates main contrib non-free >> $OUTPUTDIR/etc/apt/sources.list

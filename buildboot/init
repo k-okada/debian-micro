@@ -27,6 +27,10 @@ mkdir -p /root/mnt/rw
 mount --bind /mnt/ro /root/mnt/ro
 mount --bind /mnt/rw /root/mnt/rw
 
+# Install busybox into the system
+cp /bin/busybox /root/bin/busybox
+busybox --install -s /root/bin
+
 # Boot into rootfs
 umount /proc
 exec switch_root -c /dev/console /root /sbin/init

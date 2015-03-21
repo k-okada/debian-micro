@@ -13,7 +13,8 @@ PACKAGELISTSDIR=$1
 # Generate the package list
 for i in $PACKAGELISTSDIR/*
 do
-	PACKAGES+=" $(cat $i)"
+   # Ignore comment lines
+	PACKAGES+=" $(grep -v '#' $i)"
 done
 
 # Return the list of packages

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -e
+
+# dpkg --force-all -P bsdutils cpio debianutils  ifupdown initramfs-tools klibc-utils pinentry-gtk2 sensible-utils
+dpkg --force-all -P e2fsprogs login findutils diffutils sed grep gcc-4.8-base gcc-4.9-base
+
