@@ -2,7 +2,7 @@
 FROM debian:jessie
 
 # Use Apt Caching
-RUN echo 'Acquire::http { Proxy "http://172.17.42.1:3142"; };' >> /etc/apt/apt.conf.d/01proxy
+# RUN echo 'Acquire::http { Proxy "http://172.17.42.1:3142"; };' >> /etc/apt/apt.conf.d/01proxy
 
 # Install the required packages for the development enviromnent
 RUN apt-get update && apt-get -y install busybox-static adduser bzip2 xz-utils insserv module-init-tools sudo debootstrap cpio isolinux syslinux-common xorriso bash vim squashfs-tools && apt-get -y -f install

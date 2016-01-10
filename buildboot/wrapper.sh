@@ -9,7 +9,8 @@ set -e
 
 # Change these settings as needed
 
-MIRROR=http://172.17.42.1:3142/http.debian.net/debian
+#MIRROR=http://172.17.42.1:3142/http.debian.net/debian
+MIRROR=http://httpredir.debian.org/debian
 SUITE=jessie
 
 # Run the scripts
