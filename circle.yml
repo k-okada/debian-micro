@@ -1,0 +1,13 @@
+general:
+  artifacts:
+    - "debian2docker.iso"
+machine:
+  services:
+    - docker
+test:
+  override:
+    - echo "Building image..."
+    - docker build -t debian2docker .
+    - echo "Running container..."
+    - docker run -i -t --privileged --name run-debian2docker debian2docker
+    - docker cp run-debian2docker:/debian2docker.iso .
